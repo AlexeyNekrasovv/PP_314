@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,61 +18,55 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userDao;
     private final UserRepository userRepository;
 
-    @Autowired
-    public UserServiceImpl(UserRepository userDao, PasswordEncoder passwordEncoder, UserRepository userRepository) {
-        this.userDao = userDao;
-        this.passwordEncoder = passwordEncoder;
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public User findUserById(Long userId) {
-        Optional<User> userFromDb = userDao.findById(userId);
-        return userFromDb.orElse(new User());
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
     }
 
     @Override
     public List<User> findAllUsers() {
-        return userDao.findAll();
+        return userRepository.findAll();
     }
 
     @Override
     @Transactional
     public void saveUser(User user) {
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        user.setRoles(user.getRoles());
-        userDao.save(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
     }
 
     @Override
     @Transactional
     public boolean updateUser(Long id, User updatedUser) {
-        Optional<User> userFromDb = userDao.findById(id);
-        if (userFromDb.isPresent()) {
-            User existingUser = userFromDb.get();
-            existingUser.setFirstName(updatedUser.getFirstName());
-            existingUser.setLastName(updatedUser.getLastName());
-            existingUser.setEmail(updatedUser.getEmail());
-            existingUser.setAge(updatedUser.getAge());
-            existingUser.setRoles(updatedUser.getRoles());
-            // Обновляем пароль, если он был изменен
-            if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-                existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-            }
-            userDao.save(existingUser);
-            return true;
-        }
-        return false;
+        return userRepository.findById(id)
+                .map(existingUser -> {
+                    existingUser.setFirstName(updatedUser.getFirstName());
+                    existingUser.setLastName(updatedUser.getLastName());
+                    existingUser.setEmail(updatedUser.getEmail());
+                    existingUser.setAge(updatedUser.getAge());
+                    existingUser.setRoles(updatedUser.getRoles());
+                    if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+                        existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+                    }
+                    userRepository.save(existingUser);
+                    return true;
+                })
+                .orElse(false);
     }
 
     @Override
     @Transactional
     public boolean deleteUser(Long userId) {
-        if (userDao.findById(userId).isPresent()) {
-            userDao.deleteById(userId);
+        if (userRepository.findById(userId).isPresent()) {
+            userRepository.deleteById(userId);
             return true;
         }
         return false;
@@ -78,6 +74,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByEmail(String email) {
-        return userDao.findByEmail(email);
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 }
+

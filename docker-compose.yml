@@ -1,30 +1,18 @@
-services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"  # Порт, на который будет доступно приложение
-    depends_on:
-      - db
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/mydatabase
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: pqGRSU123
-    restart: always
 
-  db:
-    image: mysql:8.0
+services:
+  mysql:
+    image: mysql:latest
     container_name: my_mysql
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: pqGRSU123
-      MYSQL_DATABASE: mydatabase
-      MYSQL_USER: root
-      MYSQL_PASSWORD: pqGRSU123
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: mydatabase2
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypass
     ports:
-      - "3306:3306"  # Порт для MySQL
+      - "3307:3306"  # Изменено на 3307
     volumes:
-      - db_data:/var/lib/mysql  # Сохраняем данные
+      - mysql_data:/var/lib/mysql
 
 volumes:
-  db_data:
+  mysql_data:

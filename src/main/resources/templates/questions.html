@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions - My Website</title>
+    <!-- Подключаем Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Подключение вашего собственного CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<!-- Header -->
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">MyWebsite</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/questions">Questions <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/tags">Tags</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/users">Users</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <aside class="col-md-3">
+            <h5>Sidebar</h5>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="#">Link 1</a></li>
+                <li class="list-group-item"><a href="#">Link 2</a></li>
+                <li class="list-group-item"><a href="#">Link 3</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="col-md-9">
+            <h2>Questions</h2>
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action">
+                    <h5 class="mb-1">Question Title 1</h5>
+                    <p class="mb-1">This is a short description of the question.</p>
+                    <small>Asked by User123 on Date</small>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <h5 class="mb-1">Question Title 2</h5>
+                    <p class="mb-1">This is another short description of another question.</p>
+                    <small>Asked by User456 on Date</small>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <h5 class="mb-1">Question Title 3</h5>
+                    <p class="mb-1">A brief overview of yet another question goes here.</p>
+                    <small>Asked by User789 on Date</small>
+                </a>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-light py-4">
+    <div class="container">
+        <span class="text-muted">© 2024 MyWebsite. All rights reserved.</span>
+    </div>
+</footer>
+
+<!-- Подключаем Bootstrap JS и jQuery (если потребуется) (опционально для других страниц) -->
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script> -->
+<script src="/js/script.js"></script>
+</body>
+</html>
