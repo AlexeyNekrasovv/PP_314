@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.repositories;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -11,11 +12,9 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("Select u from User u left join fetch u.roles")
-    List<User> findAllUsers();
-
-    @Query("Select u from User u left join fetch u.roles where u.email=:email")
+    @EntityGraph(attributePaths = "roles")
     Optional<User> findByEmail(String email);
 
-    //User findById(Long id);
+    @EntityGraph(attributePaths = "roles")
+    List<User> findAll();
 }
