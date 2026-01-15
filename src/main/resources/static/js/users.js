@@ -81,11 +81,11 @@ function loadRoles() {
             roles.forEach(role => {
                 const option = document.createElement('option');
                 option.value = role.id;
-                option.text = role.authority; // Предполагается, что поле называется 'authority'
+                option.text = role.name;
                 roleSelect.appendChild(option);
                 const editOption = document.createElement('option');
                 editOption.value = role.id;
-                editOption.text = role.authority;
+                editOption.text = role.name;
                 editRoleSelect.appendChild(editOption);
             });
         })
@@ -99,16 +99,16 @@ function loadRoles() {
 document.getElementById('new-user-form').addEventListener('submit', function (event) {
     event.preventDefault();
     const formData = new FormData(this);
-    const rolesSelected = Array.from(document.getElementById('roles').selectedOptions).map(option => ({
-        id: parseInt(option.value, 10)
-    }));
+    const roleIds = Array.from(document.getElementById('roles').selectedOptions).map(option =>
+        parseInt(option.value, 10)
+    );
     const user = {
         firstName: formData.get('firstName'),
         lastName: formData.get('lastName'),
         age: parseInt(formData.get('age'), 10),
         email: formData.get('email'),
         password: formData.get('password'),
-        roles: rolesSelected
+        roleIds: roleIds
     };
     console.log('Creating user:', user);
     fetch('/admin/users', {
@@ -170,16 +170,16 @@ document.getElementById('editUserForm').addEventListener('submit', function (eve
     event.preventDefault();
     const formData = new FormData(this);
     const userId = parseInt(formData.get('id'), 10);
-    const rolesSelected = Array.from(document.getElementById('editRoles').selectedOptions).map(option => ({
-        id: parseInt(option.value, 10)
-    }));
+    const roleIds = Array.from(document.getElementById('editRoles').selectedOptions).map(option =>
+        parseInt(option.value, 10)
+    );
     const user = {
-        id: userId, // ID пользователя обязательно
+        id: userId,
         firstName: formData.get('editFirstName'),
         lastName: formData.get('editLastName'),
         age: parseInt(formData.get('editAge'), 10),
         email: formData.get('editEmail'),
-        roles: rolesSelected
+        roleIds: roleIds
     };
     console.log('Updating user:', user);
     fetch(`/admin/users/${userId}`, { // Исправлен путь

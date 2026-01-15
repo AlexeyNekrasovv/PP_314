@@ -15,10 +15,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById("age").textContent = user.age;
                     document.getElementById("email").textContent = user.email;
                     // Обработка ролей
-                    let roles = user.authorities.map(role => role.authority.substring(5)).join(", ");
+                    let roles = user.roles.map(role => role.name.replace('ROLE_', '')).join(", ");
                     document.getElementById("roles").textContent = roles;
                     // Для отображения роли в навигации
-                    document.getElementById("navbarUserEmail").textContent = user.username;
+                    document.getElementById("navbarUserEmail").textContent = user.email;
                     document.getElementById("navbarUserRoles").textContent = roles;
             })
             .catch(error => {
