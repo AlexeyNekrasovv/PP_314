@@ -40,18 +40,23 @@ function fetchUsers() {
         .then(response => {
             console.log('Users fetched:', response);
             const tableBody = document.getElementById('users-table-body');
-            tableBody.innerHTML = ''; // Очищаем существующие строки
+            tableBody.innerHTML = '';
             response.forEach(user => {
                 const row = document.createElement('tr');
+                const rolesHtml = user.roles.map(role =>
+                    `<span class="role-badge">${role.name.replace('ROLE_', '')}</span>`
+                ).join(' ');
                 row.innerHTML = `
                     <td>${user.id}</td>
                     <td>${user.firstName}</td>
                     <td>${user.lastName}</td>
                     <td>${user.age}</td>
                     <td>${user.email}</td>
-                    <td>${user.roles.map(role => role.name).join(', ')}</td> 
-                    <td><button class="btn btn-info" onclick="openEditUserPopup(${user.id})">Edit</button></td>
-                    <td><button class="btn btn-danger" onclick="openDeleteUserPopup(${user.id})">Delete</button></td>
+                    <td>${rolesHtml}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info" onclick="openEditUserPopup(${user.id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="openDeleteUserPopup(${user.id})">Delete</button>
+                    </td>
                 `;
                 tableBody.appendChild(row);
             });

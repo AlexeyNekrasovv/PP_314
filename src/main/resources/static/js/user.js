@@ -14,12 +14,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById("lastName").textContent = user.lastName;
                     document.getElementById("age").textContent = user.age;
                     document.getElementById("email").textContent = user.email;
-                    // Обработка ролей
-                    let roles = user.roles.map(role => role.name.replace('ROLE_', '')).join(", ");
-                    document.getElementById("roles").textContent = roles;
+                    // Обработка ролей с бейджами
+                    const rolesHtml = user.roles.map(role =>
+                        `<span class="role-badge">${role.name.replace('ROLE_', '')}</span>`
+                    ).join(' ');
+                    document.getElementById("roles").innerHTML = rolesHtml;
                     // Для отображения роли в навигации
                     document.getElementById("navbarUserEmail").textContent = user.email;
-                    document.getElementById("navbarUserRoles").textContent = roles;
+                    document.getElementById("navbarUserRoles").textContent = user.roles.map(r => r.name.replace('ROLE_', '')).join(', ');
             })
             .catch(error => {
                     console.error("Error fetching user data:", error);
